@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiNoviosTaylor.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 namespace ApiNoviosTaylor.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/tsnovios")]
     public class NovioController : ControllerBase
     {
