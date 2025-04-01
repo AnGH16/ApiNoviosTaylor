@@ -28,7 +28,16 @@ namespace ConsumirApiNoviosTs.Service
             var json = JsonSerializer.Serialize(loginData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/auth/login", content);
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            };
+
+            using var client = new HttpClient(handler);
+
+            // Asegúrate de usar la URL completa
+            var response = await client.PostAsync("https://localhost:7288/api/auth/login", content);
+
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -42,11 +51,19 @@ namespace ConsumirApiNoviosTs.Service
             return false;
         }
 
+
         public async Task<List<Novio>> GetNoviosAsync()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            };
 
-            var response = await _httpClient.GetAsync("api/tsnovios");
+            using var client = new HttpClient(handler);
+            client.BaseAddress = new Uri("https://localhost:7288/");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+
+            var response = await client.GetAsync("api/tsnovios");
 
             if (!response.IsSuccessStatusCode)
                 return new List<Novio>();
@@ -56,5 +73,7 @@ namespace ConsumirApiNoviosTs.Service
 
             return novios ?? new List<Novio>();
         }
+
+
     }
 }
