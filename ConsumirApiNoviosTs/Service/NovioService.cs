@@ -19,7 +19,7 @@ namespace ConsumirApiNoviosTs.Service
         public NovioService()
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7288/");
+            _httpClient.BaseAddress = new Uri("https://10.0.2.44:7288/");
         }
 
         public async Task<bool> LoginAsync(string username, string password)
@@ -36,7 +36,7 @@ namespace ConsumirApiNoviosTs.Service
             using var client = new HttpClient(handler);
 
             // Asegúrate de usar la URL completa
-            var response = await client.PostAsync("https://localhost:7288/api/auth/login", content);
+            var response = await client.PostAsync("https://10.0.2.44:7288/api/auth/login", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -60,7 +60,7 @@ namespace ConsumirApiNoviosTs.Service
             };
 
             using var client = new HttpClient(handler);
-            client.BaseAddress = new Uri("https://localhost:7288/");
+            client.BaseAddress = new Uri("https://10.0.2.44:7288/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
             var response = await client.GetAsync("api/tsnovios");
