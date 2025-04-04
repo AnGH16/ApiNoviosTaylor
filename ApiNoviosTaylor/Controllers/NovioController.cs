@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using ApiNoviosTaylor.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 namespace ApiNoviosTaylor.Controllers
 {
     [ApiController]
-    [Authorize]
-    [Route("api/tsnovios")]
+    [Authorize(Roles = "Admin")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/tsnovios")]
     public class NovioController : ControllerBase
     {
         private readonly NoviosContext _context;
